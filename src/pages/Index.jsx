@@ -1,4 +1,4 @@
-import { Box, Container, Flex, Heading, Text, VStack, Link, HStack, Button } from "@chakra-ui/react";
+import { Box, Container, Flex, Heading, Text, VStack, Link, HStack, Button, useColorMode, useColorModeValue } from "@chakra-ui/react";
 import { FaHome, FaUserAlt, FaEnvelope } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import { Link as RouterLink } from "react-router-dom";
@@ -6,19 +6,24 @@ import { Link as RouterLink } from "react-router-dom";
 const Index = () => {
   const [posts, setPosts] = useState([]);
 
+  const { toggleColorMode } = useColorMode();
+  const bg = useColorModeValue("gray.100", "gray.900");
+  const color = useColorModeValue("black", "white");
+
   useEffect(() => {
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
     setPosts(storedPosts);
   }, []);
 
   return (
-    <Container maxW="container.xl" p={4}>
+    <Container maxW="container.xl" p={4} bg={bg} color={color}>
       <Flex as="nav" bg="gray.800" color="white" p={4} justifyContent="space-between" alignItems="center">
         <Heading as="h1" size="lg">My Blog</Heading>
         <HStack spacing={4}>
           <Link as={RouterLink} to="/" color="white" _hover={{ color: "gray.400" }}><FaHome /> Home</Link>
           <Link as={RouterLink} to="#" color="white" _hover={{ color: "gray.400" }}><FaUserAlt /> About</Link>
           <Link as={RouterLink} to="#" color="white" _hover={{ color: "gray.400" }}><FaEnvelope /> Contact</Link>
+        <Button onClick={toggleColorMode} colorScheme="teal" size="sm">Toggle {useColorModeValue("Dark", "Light")} Mode</Button>
         </HStack>
       </Flex>
       <Flex mt={8} direction={{ base: "column", md: "row" }}>
